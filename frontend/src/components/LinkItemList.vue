@@ -1,17 +1,19 @@
 <template>
   <div
-    class="m-auto w-1/6 border-2 border-gray-950 bg-blue-300 grid grid-rows-3 gap-4 text-center rounded-xl"
+    class="shadow-md shadow-gray-800 m-auto w-1/6 size-44 border-2 border-gray-950 bg-blue-300 grid grid-rows-3 text-center rounded-xl"
     v-for="item in links"
-    v-bind="item"
-    :key="item.text"
+    :key="item.id"
   >
-    <a class="pt-2" :href="item.link">{{ item.link }}</a>
-    <span class="py-1">{{ item.label }}</span>
-    <span class="pb-2">{{ item.text }}</span>
+    <a class="pt-2 underline text-violet-600" :href="item.url">{{ item.url }}</a>
+    <span class="py-1">{{ item.title }}</span>
+    <span class="pb-2">{{ item.description }}</span>
   </div>
 </template>
 <script setup lang="ts">
-defineProps<{
-  links: { link: string; label: string; text: string }[]
+import type { LinkItem } from '@/types/LinkTypes'
+
+const props = defineProps<{
+  links: LinkItem[]
 }>()
+console.log(props.links)
 </script>
