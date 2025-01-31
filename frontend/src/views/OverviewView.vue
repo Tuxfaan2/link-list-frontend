@@ -73,6 +73,8 @@ import { useModal } from '@/composables/useModal';
 import CreateLinkPopup from '@/components/CreateLinkPopup.vue';
 import GithubLogo from '@/assets/github.svg';
 
+const positionRight = ref<number>(0);
+const positionTop = ref<number>(0);
 const searchQuery = ref<string>('');
 const links = ref<LinkItem[]>([]);
 const { createLinkItem, searchLinkItems } = useLinkListApi();
@@ -81,6 +83,11 @@ const { isOpen, openModal, closeModal } = useModal();
 onMounted(async () => {
   links.value = (await searchLinkItems('')).hits;
 });
+
+function handleMouseMove(event: MouseEvent) {
+  positionTop.value = event.clientY;
+  positionRight.value = event.clientX;
+}
 
 async function searchLinks() {
   links.value = (await searchLinkItems(searchQuery.value)).hits;
