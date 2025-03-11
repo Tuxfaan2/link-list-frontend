@@ -36,7 +36,6 @@
   </TransitionRoot>
   <div class="fixed inset-0 bg-gradient-to-r from-blue-200 to-violet-200 overflow-scroll p-5">
     <div class="w-full grid grid-cols-1 text-neutral-900">
-      <RouterLink to="/" class=""> Home </RouterLink>
       <a href="https://github.com/Tuxfaan2" class="size-10 ml-auto" target="”_blank”"
         ><img :src="GithubLogo" alt="svg"
       /></a>
