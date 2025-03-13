@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,7 +16,6 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@headlessui/vue": "^1.7.23",
-    "dotenv": "^16.4.7",
     "meilisearch": "^0.46.0",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
