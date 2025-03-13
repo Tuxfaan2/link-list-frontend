@@ -91,6 +91,7 @@ function openCreateLinkPopup() {
 
 async function createListItem(req: CreateLinkItemRequest) {
   const newLinkItem = await createLinkItem(req);
+  console.log('created link');
   links.value.unshift(newLinkItem);
   closeModal();
 }

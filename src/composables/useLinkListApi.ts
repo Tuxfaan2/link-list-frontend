@@ -10,6 +10,7 @@ export function useLinkListApi() {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Access-Control-Allow-Methods': 'PUT, GET,POST',
       },
       body: JSON.stringify(req),
     });
@@ -27,6 +28,7 @@ export function useLinkListApi() {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Basic ${btoa(username + ':' + password)}`,
+        'Access-Control-Allow-Methods': 'PUT, GET,POST',
       },
     });
     return resp.json();
@@ -40,6 +42,7 @@ export function useLinkListApi() {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Access-Control-Allow-Methods': 'PUT, GET,POST',
       },
       body: JSON.stringify({ q: query }),
     });
