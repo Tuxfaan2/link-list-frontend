@@ -35,7 +35,6 @@ export function useLinkListApi() {
   }
 
   async function searchLinkItems(query: string): Promise<MeilisearchLinkResponse> {
-    console.log(localStorage.getItem('token'));
     const resp = await fetch('/backend/api/v1/search-link', {
       method: 'POST',
       headers: {
