@@ -10,6 +10,7 @@ export function useLinkListApi() {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Access-Control-Allow-Methods': 'PUT, GET,POST',
       },
       body: JSON.stringify(req),
     });
@@ -27,19 +28,20 @@ export function useLinkListApi() {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Basic ${btoa(username + ':' + password)}`,
+        'Access-Control-Allow-Methods': 'PUT, GET,POST',
       },
     });
     return resp.json();
   }
 
   async function searchLinkItems(query: string): Promise<MeilisearchLinkResponse> {
-    console.log(localStorage.getItem('token'));
     const resp = await fetch('/backend/api/v1/search-link', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Access-Control-Allow-Methods': 'PUT, GET,POST',
       },
       body: JSON.stringify({ q: query }),
     });

@@ -50,7 +50,6 @@ async function handleLogin() {
   const currentPassword = password.value;
   if (currentUsername !== null && currentPassword !== null) {
     const resp = await createToken(currentUsername, currentPassword);
-    console.log(resp.token);
     localStorage.setItem('token', resp.token);
     Router.push('/');
   }

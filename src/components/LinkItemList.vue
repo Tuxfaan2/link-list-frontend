@@ -10,10 +10,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { LinkItem } from '@/types/LinkTypes'
+import type { LinkItem } from '@/types/LinkTypes';
 
-const props = defineProps<{
-  links: LinkItem[]
-}>()
-console.log(props.links)
+defineProps<{
+  links: LinkItem[];
+}>();
 </script>
