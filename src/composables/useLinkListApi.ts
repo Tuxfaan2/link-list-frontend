@@ -41,7 +41,6 @@ export function useLinkListApi() {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Access-Control-Allow-Methods': 'PUT, GET,POST',
       },
       body: JSON.stringify({ q: query }),
     });
@@ -52,5 +51,21 @@ export function useLinkListApi() {
     return resp.json();
   }
 
-  return { createLinkItem, searchLinkItems, createToken };
+  async function deleteLinkItem(linkId: number): Promise<LinkItem> {
+    const resp = await fetch('/backend/api/v1/' + linkId, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    if (resp.status === 401) {
+      Router.push('/login');
+    }
+
+    return resp.json();
+  }
+
+  return { createLinkItem, searchLinkItems, createToken, deleteLinkItem };
 }

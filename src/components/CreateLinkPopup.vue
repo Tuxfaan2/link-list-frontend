@@ -3,11 +3,7 @@
     <div class="grid grid-cols-1 p-6 gap-5">
       <label
         >URL:
-        <input
-          pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)"
-          v-model="url"
-          class="shadow-md shadow-gray-800 bg-gray-400 w-full rounded"
-        />
+        <input v-model="url" class="shadow-md shadow-gray-800 bg-gray-400 w-full rounded" />
       </label>
       <label>
         Titel:
@@ -39,8 +35,8 @@
 import type { CreateLinkItemRequest, LinkItem } from '@/types/LinkTypes';
 import { ref } from 'vue';
 
-const props = defineProps<{
-  linkItem?: LinkItem;
+defineProps<{
+  linkItem: LinkItem | null;
 }>();
 const emit = defineEmits<{
   (event: 'on-submit', value: CreateLinkItemRequest): void;
