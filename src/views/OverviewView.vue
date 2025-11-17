@@ -27,7 +27,7 @@
             <DialogPanel
               class="shadow-2xl shadow-black w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle transition-all"
             >
-              <CreateLinkPopup @on-submit="createListItem" />
+              <CreateLinkPopup @on-submit="createListItem" :link-item="selectedLinkItem" />
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -57,7 +57,7 @@
       >
         New
       </button>
-      <LinkItemList :links="links" />
+      <LinkItemList :links="links" @on-delete-link-item="onDeleteLinkItem" />
     </div>
   </div>
 </template>
@@ -74,7 +74,8 @@ import GithubLogo from '@/assets/github.svg';
 
 const searchQuery = ref<string>('');
 const links = ref<LinkItem[]>([]);
-const { createLinkItem, searchLinkItems } = useLinkListApi();
+const selectedLinkItem = ref<LinkItem | null>(null);
+const { createLinkItem, searchLinkItems, deleteLinkItem } = useLinkListApi();
 const { isOpen, openModal, closeModal } = useModal();
 
 onMounted(async () => {
@@ -91,8 +92,13 @@ function openCreateLinkPopup() {
 
 async function createListItem(req: CreateLinkItemRequest) {
   const newLinkItem = await createLinkItem(req);
-  links.value.unshift(newLinkItem);
+  links.value.push(newLinkItem);
   closeModal();
+}
+
+async function onDeleteLinkItem(item: LinkItem) {
+  await deleteLinkItem(item.id);
+  links.value.splice(links.value.indexOf(item), 1);
 }
 </script>
 

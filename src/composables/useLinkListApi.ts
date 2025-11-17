@@ -1,56 +1,52 @@
 import type { CreateLinkItemRequest, LinkItem, MeilisearchLinkResponse } from '@/types/LinkTypes';
-import Router from '@/router';
-import type { TokenType } from '@/types/AuthorizationTypes';
+import { useToken } from '@/composables/useToken';
 
 export function useLinkListApi() {
+  const { getOrRefreshToken } = useToken();
+
   async function createLinkItem(req: CreateLinkItemRequest): Promise<LinkItem> {
     const resp = await fetch('/backend/api/v1/link', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Access-Control-Allow-Methods': 'PUT, GET,POST',
+        Authorization: `Bearer ${await getOrRefreshToken()}`,
       },
       body: JSON.stringify(req),
     });
-    if (resp.status === 401) {
-      Router.push('/login');
-    }
 
-    return resp.json();
-  }
-
-  async function createToken(username: string, password: string): Promise<TokenType> {
-    const resp = await fetch('/backend/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Basic ${btoa(username + ':' + password)}`,
-        'Access-Control-Allow-Methods': 'PUT, GET,POST',
-      },
-    });
     return resp.json();
   }
 
   async function searchLinkItems(query: string): Promise<MeilisearchLinkResponse> {
+    const token = await getOrRefreshToken();
+    console.log(token);
     const resp = await fetch('/backend/api/v1/search-link', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Access-Control-Allow-Methods': 'PUT, GET,POST',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ q: query }),
     });
-    if (resp.status === 401) {
-      Router.push('/login');
-    }
 
     return resp.json();
   }
 
-  return { createLinkItem, searchLinkItems, createToken };
+  async function deleteLinkItem(linkId: number): Promise<LinkItem> {
+    const token = await getOrRefreshToken();
+    const resp = await fetch('/backend/api/v1/link/' + linkId, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return resp.json();
+  }
+
+  return { createLinkItem, searchLinkItems, deleteLinkItem };
 }

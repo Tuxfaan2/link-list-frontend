@@ -1,18 +1,25 @@
 <template>
   <div
-    class="shadow-md shadow-gray-800 m-auto w-1/6 size-44 border-2 border-gray-950 bg-blue-300 grid grid-rows-3 text-center rounded-xl"
+    class="shadow-md shadow-gray-800 m-auto min-w-72 size-44 border-2 border-gray-950 bg-blue-300 grid grid-rows-3 text-center rounded-xl pl-3 pt-3"
     v-for="item in links"
     :key="item.id"
   >
-    <a class="pt-2 underline text-violet-600" :href="item.url">{{ item.url }}</a>
-    <span class="py-1">{{ item.title }}</span>
-    <span class="pb-2">{{ item.description }}</span>
+    <LinkItemComponent @on-delete-link-item="onDeleteLinkItem" :linkItem="item" />
   </div>
 </template>
 <script setup lang="ts">
+import LinkItemComponent from '@/components/LinkItemComponent.vue';
 import type { LinkItem } from '@/types/LinkTypes';
 
 defineProps<{
   links: LinkItem[];
 }>();
+
+const emit = defineEmits<{
+  (event: 'on-delete-link-item', value: LinkItem): void;
+}>();
+
+function onDeleteLinkItem(item: LinkItem) {
+  emit('on-delete-link-item', item);
+}
 </script>
