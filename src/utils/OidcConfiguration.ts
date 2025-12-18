@@ -3,7 +3,7 @@ import { UserManager } from 'oidc-client-ts';
 const url = window.location.origin + '/oidc-client';
 
 export const OIDC_SETTINGS = {
-  authority: 'http://localhost:8080/realms/master',
+  authority: 'https://sso.tuxfan.de/realms/master',
   client_id: 'link-list',
   redirect_uri: url + '/callback',
   post_logout_redirect_uri: url,
