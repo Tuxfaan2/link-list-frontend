@@ -79,11 +79,11 @@ const { createLinkItem, searchLinkItems, deleteLinkItem } = useLinkListApi();
 const { isOpen, openModal, closeModal } = useModal();
 
 onMounted(async () => {
-  links.value = (await searchLinkItems('')).hits;
+  links.value = (await searchLinkItems('')).hits ?? [];
 });
 
 async function searchLinks() {
-  links.value = (await searchLinkItems(searchQuery.value)).hits;
+  links.value = (await searchLinkItems(searchQuery.value)).hits ?? [];
 }
 
 function openCreateLinkPopup() {

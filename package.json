@@ -17,6 +17,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@headlessui/vue": "^1.7.23",
+    "@tuxfaan2/link-list-api": "^0.0.1-SNAPSHOT-DEVELOP.1766929337015",
     "meilisearch": "^0.46.0",
     "oidc-client-ts": "^3.4.0",
     "vue": "^3.5.12",
