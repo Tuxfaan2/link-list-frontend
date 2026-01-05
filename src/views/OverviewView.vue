@@ -34,7 +34,10 @@
       </div>
     </Dialog>
   </TransitionRoot>
-  <div class="fixed inset-0 bg-gradient-to-r from-blue-200 to-violet-200 overflow-scroll p-5">
+  <div
+    id="scroll"
+    class="fixed inset-0 bg-gradient-to-r from-blue-200 to-violet-200 overflow-y-auto p-5"
+  >
     <div class="w-full grid grid-cols-1 text-neutral-900">
       <a href="https://github.com/Tuxfaan2" class="size-10 ml-auto" target="”_blank”"
         ><img :src="GithubLogo" alt="svg"
@@ -58,6 +61,13 @@
         New
       </button>
       <LinkItemList :links="links" @on-delete-link-item="onDeleteLinkItem" />
+      <PagingButton
+        class="mx-auto w-fit"
+        :current-page="currentPage"
+        :total-pages="totalPages"
+        @on-go-left="onGoLeft"
+        @on-go-right="onGoRight"
+      />
     </div>
   </div>
 </template>
@@ -71,19 +81,31 @@ import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessu
 import { useModal } from '@/composables/useModal';
 import CreateLinkPopup from '@/components/CreateLinkPopup.vue';
 import GithubLogo from '@/assets/github.svg';
+import PagingButton from '@/components/PagingButton.vue';
+import type { LinkItemDto, MeilisearchLinkSearchResponse } from '@tuxfaan2/link-list-api';
 
+const totalPages = ref<number>(1);
+const currentPage = ref<number>(1);
 const searchQuery = ref<string>('');
-const links = ref<LinkItem[]>([]);
-const selectedLinkItem = ref<LinkItem | null>(null);
+const links = ref<LinkItemDto[]>([]);
+const selectedLinkItem = ref<LinkItemDto | null>(null);
 const { createLinkItem, searchLinkItems, deleteLinkItem } = useLinkListApi();
 const { isOpen, openModal, closeModal } = useModal();
 
 onMounted(async () => {
-  links.value = (await searchLinkItems('')).hits ?? [];
+  const meilisearchLinkSearchResponsePromise = await searchLinkItems('', currentPage.value);
+  setSearchResult(meilisearchLinkSearchResponsePromise);
 });
 
+function setSearchResult(searchResponse: MeilisearchLinkSearchResponse) {
+  links.value = searchResponse.hits ?? [];
+  totalPages.value = searchResponse.totalPages;
+  currentPage.value = searchResponse.page;
+}
+
 async function searchLinks() {
-  links.value = (await searchLinkItems(searchQuery.value)).hits ?? [];
+  const response = await searchLinkItems(searchQuery.value, currentPage.value);
+  setSearchResult(response);
 }
 
 function openCreateLinkPopup() {
@@ -99,6 +121,20 @@ async function createListItem(req: CreateLinkItemRequest) {
 async function onDeleteLinkItem(item: LinkItem) {
   await deleteLinkItem(item.id);
   links.value.splice(links.value.indexOf(item), 1);
+}
+
+async function onGoLeft() {
+  if (currentPage.value > 1) {
+    const meilisearchLinkSearchResponsePromise = await searchLinkItems('', currentPage.value - 1);
+    setSearchResult(meilisearchLinkSearchResponsePromise);
+  }
+}
+
+async function onGoRight() {
+  if (currentPage.value < totalPages.value) {
+    const meilisearchLinkSearchResponsePromise = await searchLinkItems('', currentPage.value + 1);
+    setSearchResult(meilisearchLinkSearchResponsePromise);
+  }
 }
 </script>
 

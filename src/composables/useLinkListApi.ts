@@ -25,9 +25,12 @@ export function useLinkListApi() {
     return linkApiClient.value.createLinkItem({ createLinkItemRequest: req });
   }
 
-  async function searchLinkItems(query: string): Promise<MeilisearchLinkSearchResponse> {
+  async function searchLinkItems(
+    query: string,
+    page: number,
+  ): Promise<MeilisearchLinkSearchResponse> {
     return await meilisearchApiClient.value.searchForLinks({
-      meilisearchSearchRequest: { q: query },
+      meilisearchSearchRequest: { q: query, page: page, hitsPerPage: 10 },
     });
   }
 
