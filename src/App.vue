@@ -13,11 +13,16 @@ async function login() {
         state: { targetUrl: `${window.location.pathname}${window.location.search}` },
       });
     } else if (user.expires_in !== undefined) {
-      await oidcUserManager.signinSilent(DEFAULT_REDIRECT_SETTINGS).then((value) => {
-        if (value !== null) {
-          userStore.login(value);
-        }
-      });
+      try {
+        await oidcUserManager.signinSilent(DEFAULT_REDIRECT_SETTINGS).then((value) => {
+          if (value !== null) {
+            userStore.login(value);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        await oidcUserManager.signinPopup();
+      }
     } else {
       userStore.login(user);
     }
